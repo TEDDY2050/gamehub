@@ -1,0 +1,54 @@
+.flappy-page {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+}
+
+.flappy-canvas {
+  display: block;
+  border: 3px solid lime;
+}
+
+.score-board {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  font-family: Poppins, sans-serif;
+  color: white;
+  background: rgba(0,0,0,0.6);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.game-over-menu {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #111;
+  color: white;
+  font-family: Poppins, sans-serif;
+  padding: 30px 50px;
+  border: 2px solid lime;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.restart-button {
+  margin-top: 15px;
+  background: lime;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #000;
+}
+
+.restart-button:hover {
+  background: #00ff00;
+}
