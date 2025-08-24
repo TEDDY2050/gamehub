@@ -13,7 +13,7 @@ class GameAPIService {
       htmlgames: {
         baseUrl: 'https://www.htmlgames.com',
         // Free to use with their ads
-        indexUrl: 'https://www.htmlgam  es.com/rss.xml'
+        indexUrl: 'https://www.htmlgames.com/rss.xml'
       },
       gamepix: {
         baseUrl: 'https://gamepix.com',

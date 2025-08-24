@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { data, Link } from 'react-router-dom';
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash, FaCheck } from 'react-icons/fa';
 
 function Signup() {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
+    // email: '',
     password: '',
-    confirmPassword: ''
+    // confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -37,18 +37,18 @@ function Signup() {
 
     const { username, email, password, confirmPassword } = formData;
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!username || !password) {
       setError('Please fill in all fields');
       setLoading(false);
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Please enter a valid email address');
-      setLoading(false);
-      return;
-    }
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (!emailRegex.test(email)) {
+    //   setError('Please enter a valid email address');
+    //   setLoading(false);
+    //   return;
+    // }
 
     if (username.length < 3) {
       setError('Username must be at least 3 characters long');
@@ -56,18 +56,18 @@ function Signup() {
       return;
     }
 
-    const allRequirementsMet = passwordRequirements.every(req => req.met);
-    if (!allRequirementsMet) {
-      setError('Password does not meet all requirements');
-      setLoading(false);
-      return;
-    }
+    // const allRequirementsMet = passwordRequirements.every(req => req.met);
+    // if (!allRequirementsMet) {
+    //   setError('Password does not meet all requirements');
+    //   setLoading(false);
+    //   return;
+    // }
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   setError('Passwords do not match');
+    //   setLoading(false);
+    //   return;
+    // }
 
     if (!agreedToTerms) {
       setError('Please agree to the Terms of Service');
@@ -75,12 +75,37 @@ function Signup() {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
+    try{ 
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password })
+      })
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || 'Something went wrong');
+        setLoading(false);
+        return;
+      }
       setLoading(false);
-      alert('Account created successfully!');
-    }, 1000);
+      alert('Account Created Successfully!');
+    } catch (error) {
+      setError('Failed to create account');
+      setLoading(false);
+    }
+
+    // Simulate API call
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   alert('Account created successfully!');
+    // }, 1000);
   };
+
+  
 
   const handleSocialSignup = (provider) => {
     console.log(`Sign up with ${provider}`);
@@ -123,7 +148,7 @@ function Signup() {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
               </label>
@@ -137,7 +162,7 @@ function Signup() {
                 placeholder="Enter your email"
                 required
               />
-            </div>
+            </div> */}
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
@@ -176,7 +201,7 @@ function Signup() {
               )}
             </div>
 
-            <div>
+            {/* <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                 Confirm Password
               </label>
@@ -199,7 +224,7 @@ function Signup() {
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-center">
               <input
@@ -237,7 +262,7 @@ function Signup() {
             </button>
 
             {/* Social Signup */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -266,7 +291,7 @@ function Signup() {
                   <span className="ml-2">Facebook</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </form>
 
           {/* Login Link */}
