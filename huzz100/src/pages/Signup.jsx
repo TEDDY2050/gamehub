@@ -1,16 +1,13 @@
 import { useState } from 'react';
-import { data, Link } from 'react-router-dom';
-import { FaGoogle, FaFacebook, FaEye, FaEyeSlash, FaCheck } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaGoogle, FaFacebook, FaEye, FaEyeSlash, FaCheck, FaGamepad, FaArrowLeft } from 'react-icons/fa';
 
 function Signup() {
   const [formData, setFormData] = useState({
     username: '',
-    // email: '',
     password: '',
-    // confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -35,7 +32,7 @@ function Signup() {
     setError('');
     setLoading(true);
 
-    const { username, email, password, confirmPassword } = formData;
+    const { username, password } = formData;
 
     if (!username || !password) {
       setError('Please fill in all fields');
@@ -43,31 +40,11 @@ function Signup() {
       return;
     }
 
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!emailRegex.test(email)) {
-    //   setError('Please enter a valid email address');
-    //   setLoading(false);
-    //   return;
-    // }
-
     if (username.length < 3) {
       setError('Username must be at least 3 characters long');
       setLoading(false);
       return;
     }
-
-    // const allRequirementsMet = passwordRequirements.every(req => req.met);
-    // if (!allRequirementsMet) {
-    //   setError('Password does not meet all requirements');
-    //   setLoading(false);
-    //   return;
-    // }
-
-    // if (password !== confirmPassword) {
-    //   setError('Passwords do not match');
-    //   setLoading(false);
-    //   return;
-    // }
 
     if (!agreedToTerms) {
       setError('Please agree to the Terms of Service');
@@ -92,48 +69,52 @@ function Signup() {
         return;
       }
       setLoading(false);
-      alert('Account Created Successfully!');
+      alert('Account Created Successfully! Welcome to HUZZ!');
     } catch (error) {
       setError('Failed to create account');
       setLoading(false);
     }
-
-    // Simulate API call
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   alert('Account created successfully!');
-    // }, 1000);
   };
-
-  
 
   const handleSocialSignup = (provider) => {
     console.log(`Sign up with ${provider}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center justify-center relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1),transparent_50%)]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md mx-auto px-6">
         {/* Header */}
-        <div className="text-center">
-          <Link to="/" className="text-4xl font-bold text-white mb-2 block">
-            HUZZ
+        <div className="text-center mb-8">
+          <Link to="/" className="inline-flex items-center gap-3 mb-6 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 transition-all duration-300">
+              <FaGamepad className="text-white text-xl group-hover:rotate-12 transition-transform duration-300" />
+            </div>
+            <div className="text-3xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+              HUZZ
+            </div>
           </Link>
-          <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-          <p className="text-blue-100">Join thousands of players worldwide</p>
+          <h2 className="text-3xl font-bold text-white mb-2">Join the Adventure</h2>
+          <p className="text-gray-400">Create your account and join millions of players worldwide</p>
         </div>
 
         {/* Signup Form */}
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           <form className="space-y-6" onSubmit={handleSignup}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+              <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-xl text-sm backdrop-blur-xl">
                 {error}
               </div>
             )}
 
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="username" className="block text-sm font-semibold text-gray-300 mb-2">
                 Username
               </label>
               <input
@@ -142,30 +123,14 @@ function Signup() {
                 type="text"
                 value={formData.username}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Choose a username"
+                className="w-full px-4 py-3 bg-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gray-700/70 transition-all duration-300"
+                placeholder="Choose a unique username"
                 required
               />
             </div>
 
-            {/* <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Enter your email"
-                required
-              />
-            </div> */}
-
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -175,14 +140,14 @@ function Signup() {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                  placeholder="Create a password"
+                  className="w-full px-4 py-3 pr-12 bg-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gray-700/70 transition-all duration-300"
+                  placeholder="Create a strong password"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-300"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
@@ -190,10 +155,16 @@ function Signup() {
               
               {/* Password Requirements */}
               {formData.password && (
-                <div className="mt-2 space-y-1">
+                <div className="mt-3 space-y-2">
                   {passwordRequirements.map((requirement, index) => (
-                    <div key={index} className={`flex items-center text-xs ${requirement.met ? 'text-green-600' : 'text-gray-500'}`}>
-                      <FaCheck className={`mr-2 ${requirement.met ? 'text-green-500' : 'text-gray-300'}`} />
+                    <div key={index} className={`flex items-center gap-2 text-xs transition-colors duration-300 ${
+                      requirement.met ? 'text-green-400' : 'text-gray-500'
+                    }`}>
+                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                        requirement.met ? 'bg-green-500' : 'bg-gray-600'
+                      }`}>
+                        {requirement.met && <FaCheck className="text-xs" />}
+                      </div>
                       {requirement.text}
                     </div>
                   ))}
@@ -201,46 +172,21 @@ function Signup() {
               )}
             </div>
 
-            {/* <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                  placeholder="Confirm your password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                >
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-            </div> */}
-
-            <div className="flex items-center">
+            <div className="flex items-start gap-3">
               <input
                 id="agree-terms"
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 rounded bg-gray-700"
               />
-              <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-700">
+              <label htmlFor="agree-terms" className="text-sm text-gray-300 leading-relaxed">
                 I agree to the{' '}
-                <Link to="/terms" className="text-purple-600 hover:text-purple-500">
+                <Link to="/terms" className="text-purple-400 hover:text-purple-300 transition-colors duration-300">
                   Terms of Service
                 </Link>
                 {' '}and{' '}
-                <Link to="/privacy" className="text-purple-600 hover:text-purple-500">
+                <Link to="/privacy" className="text-purple-400 hover:text-purple-300 transition-colors duration-300">
                   Privacy Policy
                 </Link>
               </label>
@@ -249,56 +195,56 @@ function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-xl hover:from-purple-500 hover:to-blue-500 focus:outline-none focus:ring-4 focus:ring-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30"
             >
               {loading ? (
-                <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Creating Account...</span>
+                </div>
               ) : (
                 'Create Account'
               )}
             </button>
 
             {/* Social Signup */}
-            {/* <div className="mt-6">
+            <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-gray-600" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+                  <span className="px-4 bg-gray-800/50 text-gray-400">Or sign up with</span>
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-6 grid grid-cols-2 gap-4">
                 <button
                   type="button"
                   onClick={() => handleSocialSignup('Google')}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  className="flex items-center justify-center gap-2 py-3 bg-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-xl text-gray-300 hover:bg-gray-600/50 hover:text-white transition-all duration-300"
                 >
                   <FaGoogle className="text-red-500" />
-                  <span className="ml-2">Google</span>
+                  <span>Google</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleSocialSignup('Facebook')}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                  className="flex items-center justify-center gap-2 py-3 bg-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-xl text-gray-300 hover:bg-gray-600/50 hover:text-white transition-all duration-300"
                 >
                   <FaFacebook className="text-blue-600" />
-                  <span className="ml-2">Facebook</span>
+                  <span>Facebook</span>
                 </button>
               </div>
-            </div> */}
+            </div>
           </form>
 
           {/* Login Link */}
-          <div className="text-center mt-6">
-            <p className="text-sm text-gray-600">
+          <div className="text-center mt-8">
+            <p className="text-gray-400">
               Already have an account?{' '}
-              <Link to="/login" className="font-medium text-purple-600 hover:text-purple-500">
+              <Link to="/login" className="font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-300">
                 Sign in here
               </Link>
             </p>
@@ -306,12 +252,13 @@ function Signup() {
         </div>
 
         {/* Back to Games */}
-        <div className="text-center">
+        <div className="text-center mt-8">
           <Link
             to="/"
-            className="text-blue-100 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-300"
           >
-            ← Back to Games
+            <FaArrowLeft />
+            <span>Back to Games</span>
           </Link>
         </div>
       </div>
