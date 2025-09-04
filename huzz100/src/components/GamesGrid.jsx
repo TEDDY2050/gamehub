@@ -519,7 +519,6 @@ function GameGrid({ selectedCategory = 'all' }) {
                       <FaPlay />
                       Play
                     </Link>
-                    <button className="w-12 h-12 bg-gray-700/50 border border-gray-600/50 rounded-xl text-gray-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 transition-all duration-300 hover:scale-110 flex items-center justify-center">
                     <button className="w-12 h-12 bg-black/60 border border-purple-500/30 rounded-xl text-gray-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 transition-all duration-300 hover:scale-110 flex items-center justify-center">
                       <FaHeart />
                     </button>
