@@ -332,7 +332,7 @@ function GameGrid({ selectedCategory = 'all' }) {
   }
 
   return (
-    <section id="games-section" className="py-20 bg-gradient-to-b from-gray-900 via-black to-gray-900 min-h-screen">
+    <section id="games-section" className="py-20 bg-gradient-to-b from-black via-gray-900 to-black min-h-screen">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16 animate-fadeIn">
@@ -346,7 +346,7 @@ function GameGrid({ selectedCategory = 'all' }) {
         </div>
 
         {/* Filter Controls */}
-        <div className="flex flex-wrap gap-6 justify-between items-center mb-12 p-6 bg-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-700/50 animate-slideInUp">
+        <div className="flex flex-wrap gap-6 justify-between items-center mb-12 p-6 bg-black/60 backdrop-blur-xl rounded-2xl border border-purple-500/20 animate-slideInUp">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <FaFire className="text-orange-400" />
@@ -363,7 +363,7 @@ function GameGrid({ selectedCategory = 'all' }) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 bg-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-xl text-white font-medium cursor-pointer focus:outline-none focus:border-purple-500 transition-all duration-300"
+              className="px-4 py-2 bg-black/60 backdrop-blur-xl border border-purple-500/30 rounded-xl text-white font-medium cursor-pointer focus:outline-none focus:border-purple-500 transition-all duration-300"
             >
               <option value="popular">🔥 Most Popular</option>
               <option value="rating">⭐ Highest Rated</option>
@@ -372,7 +372,7 @@ function GameGrid({ selectedCategory = 'all' }) {
             </select>
           </div>
 
-          <div className="flex bg-gray-700/30 rounded-xl p-1">
+          <div className="flex bg-black/40 backdrop-blur-xl border border-purple-500/20 rounded-xl p-1">
             <button
               className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
                 viewMode === 'grid' 
@@ -406,7 +406,7 @@ function GameGrid({ selectedCategory = 'all' }) {
             <div 
               key={game.id} 
               className={`group relative bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 animate-fadeIn ${
-                game.type === 'built-in' ? 'ring-2 ring-purple-500/30' : ''
+                game.type === 'built-in' ? 'ring-2 ring-purple-500/50 bg-gradient-to-br from-purple-900/20 to-blue-900/20' : ''
               } ${
                 viewMode === 'list' ? 'flex h-32' : ''
               }`}
@@ -448,10 +448,10 @@ function GameGrid({ selectedCategory = 'all' }) {
                 {/* Type Badge */}
                 <div className="absolute top-4 left-4 z-10">
                   <span className={`px-3 py-1 text-xs font-bold rounded-full backdrop-blur-xl ${
-                    game.type === 'built-in' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' :
-                    game.type === 'trivia' ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' :
-                    game.type === 'cards' ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white' :
-                    'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                    game.type === 'built-in' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30' :
+                    game.type === 'trivia' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/30' :
+                    game.type === 'cards' ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-lg shadow-red-500/30' :
+                    'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/30'
                   }`}>
                     {game.type === 'built-in' ? '⭐ Premium' : 
                      game.type === 'trivia' ? '🧠 Trivia' :
@@ -460,7 +460,7 @@ function GameGrid({ selectedCategory = 'all' }) {
                 </div>
 
                 {/* Rating Badge */}
-                <div className="absolute bottom-4 right-4 flex items-center gap-1 px-3 py-1 bg-black/80 backdrop-blur-xl text-white text-sm font-semibold rounded-full">
+                <div className="absolute bottom-4 right-4 flex items-center gap-1 px-3 py-1 bg-black/90 backdrop-blur-xl text-white text-sm font-semibold rounded-full border border-purple-500/30">
                   <FaStar className="text-yellow-400" />
                   <span>{game.rating}</span>
                 </div>
@@ -486,7 +486,7 @@ function GameGrid({ selectedCategory = 'all' }) {
                     {game.tags?.slice(0, 3).map((tag, tagIndex) => (
                       <span 
                         key={tagIndex} 
-                        className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs font-medium rounded-md"
+                        className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-medium rounded-md border border-purple-500/30"
                       >
                         {tag}
                       </span>
@@ -520,6 +520,7 @@ function GameGrid({ selectedCategory = 'all' }) {
                       Play
                     </Link>
                     <button className="w-12 h-12 bg-gray-700/50 border border-gray-600/50 rounded-xl text-gray-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 transition-all duration-300 hover:scale-110 flex items-center justify-center">
+                    <button className="w-12 h-12 bg-black/60 border border-purple-500/30 rounded-xl text-gray-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 transition-all duration-300 hover:scale-110 flex items-center justify-center">
                       <FaHeart />
                     </button>
                   </div>
@@ -535,7 +536,7 @@ function GameGrid({ selectedCategory = 'all' }) {
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-6 py-3 bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 text-white font-semibold rounded-xl hover:bg-gray-700/50 hover:border-purple-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-black/60 backdrop-blur-xl border border-purple-500/30 text-white font-semibold rounded-xl hover:bg-purple-600/20 hover:border-purple-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               ← Previous
             </button>
@@ -554,7 +555,7 @@ function GameGrid({ selectedCategory = 'all' }) {
                     className={`w-12 h-12 font-bold rounded-xl transition-all duration-300 ${
                       currentPage === page 
                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30' 
-                        : 'bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                        : 'bg-black/60 backdrop-blur-xl border border-purple-500/30 text-gray-300 hover:bg-purple-600/20 hover:text-white'
                     }`}
                   >
                     {page}
@@ -572,7 +573,7 @@ function GameGrid({ selectedCategory = 'all' }) {
             <button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-6 py-3 bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 text-white font-semibold rounded-xl hover:bg-gray-700/50 hover:border-purple-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-black/60 backdrop-blur-xl border border-purple-500/30 text-white font-semibold rounded-xl hover:bg-purple-600/20 hover:border-purple-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next →
             </button>
