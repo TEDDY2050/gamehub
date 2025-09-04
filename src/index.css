@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+/* Custom Gaming Fonts */
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Enhanced Gaming Color Palette */
+  --primary-purple: #8B5CF6;
+  --primary-purple-dark: #7C3AED;
+  --primary-purple-light: #A78BFA;
+  --secondary-cyan: #06B6D4;
+  --secondary-pink: #EC4899;
+  --accent-yellow: #F59E0B;
+  --gaming-dark: #0F0F23;
+  --gaming-darker: #070716;
+  --surface-light: #F8FAFC;
+  --surface-dark: #1E293B;
+  --text-light: #F1F5F9;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  --success-green: #10B981;
+  --danger-red: #EF4444;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Rajdhani', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+  color: #111827;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Gaming Typography */
+.gaming-font {
+  font-family: 'Orbitron', monospace;
+}
+
+.gaming-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--primary-purple), var(--secondary-cyan));
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--primary-purple-dark), var(--secondary-pink));
+  transform: scale(1.1);
+}
+
+/* Hide scrollbar for certain elements */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enhanced Text Utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Gaming Button Styles */
+.gaming-button {
+  position: relative;
+  background: linear-gradient(45deg, var(--primary-purple), var(--primary-purple-dark));
+  border: none;
+  border-radius: 12px;
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.gaming-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.gaming-button:hover::before {
+  left: 100%;
+}
+
+.gaming-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(45deg, var(--primary-purple-dark), var(--secondary-cyan));
+}
+
+.gaming-button:active {
+  transform: translateY(0);
+}
+
+/* Enhanced Focus States */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--primary-purple);
+  outline-offset: 2px;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Gaming Link Styles */
+a:focus {
+  outline: 2px solid var(--primary-purple);
+  outline-offset: 2px;
+}
+
+/* Advanced Gaming Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.4);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Enhanced Game Card Hover Effects */
+.game-card-enhanced {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.game-card-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.game-card-enhanced:hover::before {
+  opacity: 1;
+}
+
+.game-card-enhanced:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(139, 92, 246, 0.2),
+    0 15px 25px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Gaming Gradient Backgrounds */
+.gaming-gradient-primary {
+  background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-dark) 50%, var(--secondary-cyan) 100%);
+}
+
+.gaming-gradient-secondary {
+  background: linear-gradient(135deg, var(--secondary-cyan) 0%, var(--secondary-pink) 100%);
+}
+
+.gaming-gradient-accent {
+  background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--secondary-pink) 100%);
+}
+
+/* Loading Enhancements */
+.loading-spinner-enhanced {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(139, 92, 246, 0.3);
+  border-top: 3px solid var(--primary-purple);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Gaming Glass Effect */
+.gaming-glass {
+  background: rgba(248, 250, 252, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+}
+
+.gaming-glass-dark {
+  background: rgba(15, 15, 35, 0.8);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Gaming Typography */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  
+  .gaming-title {
+    font-size: 1.8rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Enhanced Form Styles */
+.gaming-input {
+  background: rgba(248, 250, 252, 0.8);
+  border: 2px solid rgba(139, 92, 246, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.gaming-input:focus {
+  background: rgba(248, 250, 252, 1);
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.gaming-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Status Indicators */
+.status-online {
+  background: linear-gradient(45deg, var(--success-green), #34D399);
+  color: white;
+}
+
+.status-popular {
+  background: linear-gradient(45deg, var(--accent-yellow), #FBBF24);
+  color: white;
+}
+
+.status-new {
+  background: linear-gradient(45deg, var(--secondary-pink), #F472B6);
+  color: white;
+}
+
+/* Gaming Shadows */
+.shadow-gaming {
+  box-shadow: 
+    0 4px 6px rgba(139, 92, 246, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-gaming-lg {
+  box-shadow: 
+    0 10px 15px rgba(139, 92, 246, 0.1),
+    0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-gaming-xl {
+  box-shadow: 
+    0 25px 50px rgba(139, 92, 246, 0.15),
+    0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Utility Classes */
+.text-gaming-gradient {
+  background: linear-gradient(45deg, var(--primary-purple), var(--secondary-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-purple: #6D28D9;
+    --primary-purple-dark: #5B21B6;
+    --text-muted: #374151;
+  }
+}

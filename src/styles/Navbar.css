@@ -1,0 +1,130 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 15px 30px;
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: 900;
+  color: #f0ae08;
+  text-decoration: none;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.nav-link {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #00aaff;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-bar {
+  width: 220px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.search-bar::placeholder {
+  color: #aaa;
+}
+
+.account-section {
+  position: relative;
+}
+
+.user-icon {
+  cursor: pointer;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.account-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.account-dropdown a {
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.account-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.categories-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 2.5rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 0.5rem 0;
+  border-radius: 6px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+}
+
+.dropdown-menu a {
+  display: block;
+  color: white;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+button.nav-link {
+  font-weight: 200;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
