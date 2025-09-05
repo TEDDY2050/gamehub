@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import SnakeGame from './games/SnakeGame';
 import FlappyBird from './games/FlappyBird';
+import TicTacToe from './games/TicTacToe';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/game/snake" element={<SnakeGame />} />
         <Route path="/game/flappybird" element={<FlappyBird />} />
+        <Route path="/game/tictactoe" element={<TicTacToe />} />
       </Routes>
     </Router>
   );

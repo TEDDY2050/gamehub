@@ -1,45 +1,208 @@
-/* Hero Section (for the "Welcome to Huzz" part) */
-.hero-section {
+.hero-enhanced {
+  position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 60vh;
+  overflow: hidden;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  color: white;
-  position: relative;
+  padding-top: 150px;
+  padding-bottom: 80px;
+}
+
+.hero-enhanced > div {
+  margin-top: 60px;
+}
+
+.hero-enhanced .inline-flex.items-center {
+  margin-bottom: 24px;
 }
 
 .hero-title {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  margin-bottom: 24px;
 }
 
-.hero-subtitle {
-  font-size: 18px;
-  opacity: 0.9;
+.hero-enhanced p.text-xl {
   margin-bottom: 32px;
-  max-width: 500px;
 }
 
-.explore-button {
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 12px 32px;
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+.hero-enhanced .flex.flex-col.sm\:flex-row {
+  margin-bottom: 48px;
 }
 
-.explore-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
+.hero-enhanced .grid.grid-cols-2 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.hero-gradient-text {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero-cta-primary {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+}
+
+.hero-cta-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-cta-primary:hover::before {
+  left: 100%;
+}
+
+.hero-cta-primary:hover {
+  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+}
+
+.hero-cta-secondary {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.hero-cta-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-cta-secondary:hover::before {
+  left: 100%;
+}
+
+.hero-enhanced .absolute.bottom-8 {
+  bottom: 32px;
+}
+
+.hero-enhanced .absolute.bottom-6 {
+  bottom: 24px;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-30px) rotate(270deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.slide-transition {
+  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .hero-enhanced {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  
+  .hero-enhanced > div {
+    margin-top: 40px;
+  }
+  
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    min-width: 200px;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-enhanced {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-enhanced p {
+    font-size: 1.125rem;
+  }
+  
+  .hero-enhanced > div {
+    margin-top: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient-text,
+  .animate-float,
+  .hero-cta-primary::before,
+  .hero-cta-secondary::before {
+    animation: none;
+  }
+  
+  .slide-transition {
+    transition-duration: 0.3s;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .hero-enhanced {
+    background: linear-gradient(135deg, #000 0%, #333 100%);
+  }
+  
+  .hero-title {
+    color: #fff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+  }
+}
+
+.hero-enhanced * {
+  will-change: transform, opacity;
+}
+
+.hero-enhanced img {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }

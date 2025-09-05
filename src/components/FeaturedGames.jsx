@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { FaPlay, FaStar, FaTrophy, FaFire } from 'react-icons/fa';
 import '../styles/FeaturedGames.css';
@@ -13,9 +12,21 @@ function FeaturedGames() {
       category: 'arcade',
       rating: '4.8',
       plays: '125K',
-      link: '../games/SnakeGame.jsx',
+      link: '/game/snake',
       featured: true,
       badges: ['Most Popular', 'Classic']
+    },
+    {
+      id: 'tictactoe',
+      title: 'Tic Tac Toe',
+      description: 'Strategic battle of X\'s and O\'s with AI opponent',
+      image: 'https://via.placeholder.com/400x300/8B5CF6/ffffff?text=⚡+Tic+Tac+Toe',
+      category: 'puzzle',
+      rating: '4.7',
+      plays: '89K',
+      link: '/game/tictactoe',
+      featured: true,
+      badges: ['Strategy', 'AI Powered']
     },
     {
       id: 'tetris',
@@ -29,18 +40,7 @@ function FeaturedGames() {
       featured: true,
       badges: ['Editor\'s Choice', 'Trending']
     },
-    {
-      id: '2048',
-      title: '2048',
-      description: 'Addictive number puzzle game',
-      image: 'https://via.placeholder.com/400x300/EC4899/ffffff?text=2048',
-      category: 'puzzle',
-      rating: '4.7',
-      plays: '200K',
-      link: '/game/2048',
-      featured: true,
-      badges: ['Brain Training', 'Addictive']
-    }
+    
   ];
 
   return (
@@ -93,6 +93,8 @@ function FeaturedGames() {
                       {badge === 'Most Popular' && <FaFire />}
                       {badge === 'Editor\'s Choice' && <FaTrophy />}
                       {badge === 'Trending' && <FaFire />}
+                      {badge === 'Strategy' && <FaTrophy />}
+                      {badge === 'AI Powered' && <FaFire />}
                       {badge}
                     </span>
                   ))}

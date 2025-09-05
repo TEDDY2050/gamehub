@@ -163,6 +163,20 @@ function GameGrid({ selectedCategory = 'all' }) {
         release_date: '2024'
       },
       {
+        id: 'tictactoe',
+        title: 'Tic Tac Toe',
+        image: 'https://via.placeholder.com/300x200/8B5CF6/ffffff?text=⚡+Tic+Tac+Toe',
+        category: 'puzzle',
+        rating: '4.7',
+        plays: '89K',
+        link: '/game/tictactoe',
+        type: 'built-in',
+        description: 'Strategic battle of X\'s and O\'s with AI opponent',
+        genre: 'Strategy',
+        developer: 'Built-in',
+        release_date: '2024'
+      },
+      {
         id: 'tetris',
         title: 'Tetris',
         image: 'https://via.placeholder.com/300x200/3B82F6/ffffff?text=◼+Tetris',
