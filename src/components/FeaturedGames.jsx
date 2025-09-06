@@ -29,18 +29,17 @@ function FeaturedGames() {
       badges: ['Strategy', 'AI Powered']
     },
     {
-      id: 'tetris',
-      title: 'Tetris',
-      description: 'The ultimate puzzle challenge',
-      image: 'https://via.placeholder.com/400x300/3B82F6/ffffff?text=◼+Tetris',
-      category: 'puzzle',
-      rating: '4.9',
-      plays: '350K',
-      link: '/game/tetris',
+      id: 'rps',
+      title: 'Rock Paper Scissors',
+      description: 'Battle against AI in this classic hand game!',
+      image: 'https://via.placeholder.com/400x300/9333ea/ffffff?text=✊+✋+✌',
+      category: 'arcade',
+      rating: '4.6',
+      plays: '102K',
+      link: '/game/rps',
       featured: true,
-      badges: ['Editor\'s Choice', 'Trending']
+      badges: ['Fun', 'Quick Play']
     },
-    
   ];
 
   return (

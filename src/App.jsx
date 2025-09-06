@@ -4,8 +4,9 @@ import Signup from './pages/Signup';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import SnakeGame from './games/SnakeGame';
-import FlappyBird from './games/FlappyBird';
+import RockPaperScissors from './games/RockPaperScissors';
 import TicTacToe from './games/TicTacToe';
+
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/game/snake" element={<SnakeGame />} />
-        <Route path="/game/flappybird" element={<FlappyBird />} />
+        <Route path="/game/rps" element={<RockPaperScissors />} />
         <Route path="/game/tictactoe" element={<TicTacToe />} />
       </Routes>
     </Router>
