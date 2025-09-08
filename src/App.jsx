@@ -1,11 +1,36 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Contact from './components/Contact';
+import Careers from './components/Careers';
+import About from './components/About'; 
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import SnakeGame from './games/SnakeGame';
 import RockPaperScissors from './games/RockPaperScissors';
 import TicTacToe from './games/TicTacToe';
+import AdminDashboard from './components/AdminDashboard';
+
+// Protected Route Component for Admin
+function ProtectedAdminRoute({ children }) {
+  const token = localStorage.getItem('authToken');
+  const userInfo = localStorage.getItem('userInfo');
+  
+  if (!token || !userInfo) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  try {
+    const user = JSON.parse(userInfo);
+    if (user.role !== 'admin') {
+      return <Navigate to="/" replace />;
+    }
+  } catch (error) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+}
 
 
 function App() {
@@ -14,10 +39,21 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/about" element={<About />} />
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/game/snake" element={<SnakeGame />} />
         <Route path="/game/rps" element={<RockPaperScissors />} />
         <Route path="/game/tictactoe" element={<TicTacToe />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboard />
+            </ProtectedAdminRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
