@@ -10,6 +10,11 @@ import SnakeGame from './games/SnakeGame';
 import RockPaperScissors from './games/RockPaperScissors';
 import TicTacToe from './games/TicTacToe';
 import AdminDashboard from './components/AdminDashboard';
+import MemoryGame from './games/MemoryGame';
+import Game2048 from './games/Game2048';
+import PacManGame from './games/PacManGame';
+import PongGame from './games/PongGame';
+import TetrisGame from './games/TetrisGame'; 
 
 // Protected Route Component for Admin
 function ProtectedAdminRoute({ children }) {
@@ -46,7 +51,13 @@ function App() {
         <Route path="/game/snake" element={<SnakeGame />} />
         <Route path="/game/rps" element={<RockPaperScissors />} />
         <Route path="/game/tictactoe" element={<TicTacToe />} />
-        <Route 
+        <Route path="/game/memory" element={<MemoryGame />} />
+        <Route path="/game/2048" element={<Game2048 />} />
+        <Route path="/game/pacman" element={<PacManGame />} />
+        <Route path="/game/pong" element={<PongGame />} />
+        <Route path="/game/tetris" element={<TetrisGame />} />
+      
+        <Route
           path="/admin" 
           element={
             <ProtectedAdminRoute>
