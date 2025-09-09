@@ -8,7 +8,7 @@ function FeaturedGames() {
       id: 'snake',
       title: 'Snake Game',
       description: 'Classic arcade game with modern twists',
-      image: './assets/snake.png',
+      image: '/assets/snake.png',
       category: 'arcade',
       rating: '4.8',
       plays: '125K',

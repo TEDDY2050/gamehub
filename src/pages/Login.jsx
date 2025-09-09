@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
-  // const [email, setEmail] = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,13 +20,6 @@ function Login() {
       return;
     }
 
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!emailRegex.test(email)) {
-    //   setError("Please enter a valid email address");
-    //   setLoading(false);
-    //   return;
-    // }
-
     try {
       const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
@@ -44,18 +36,22 @@ function Login() {
         return;
       }
 
+      // Store token and user info
       localStorage.setItem("authToken", data.token);
+      localStorage.setItem("userInfo", JSON.stringify(data.user));
+      
       setLoading(false);
-      alert("Login successful!");
+      
+      // Redirect based on role
+      if (data.user.role === 'admin') {
+        window.location.href = '/admin';
+      } else {
+        window.location.href = '/';
+      }
     } catch (error) {
       setError("Failed to log in");
+      setLoading(false);
     }
-
-    // Simulate API call
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   alert("Login successful!");
-    // }, 1000);
   };
 
   const handleSocialLogin = (provider) => {
@@ -83,20 +79,6 @@ function Login() {
               </div>
             )}
 
-            {/* <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Enter your email"
-                required
-              />
-            </div> */}
             <div>
               <label
                 htmlFor="username"
@@ -114,6 +96,7 @@ function Login() {
                 required
               />
             </div>
+
             <div>
               <label
                 htmlFor="password"
