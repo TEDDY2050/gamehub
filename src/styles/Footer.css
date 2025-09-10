@@ -205,52 +205,90 @@
   transform: translateX(4px);
 }
 
-/* Gaming Statistics Section */
-.footer-stats {
+/* FIXED: Gaming Statistics Section */
+.gaming-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  padding: 2rem;
-  background: rgba(139, 92, 246, 0.05);
-  border-radius: 16px;
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  padding: 2rem 0;
   margin-bottom: 2rem;
-  animation: slideInUp 0.8s ease-out 0.4s both;
+  animation: slideInUp 0.8s ease-out 0.2s both;
 }
+
 .stat-card {
-    background: transparent;
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 20px;
-    border: 1px solid rgba(139, 92, 246, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.05)
+  /* FIXED: Removed transparent background and backdrop-filter */
+  background: rgba(15, 15, 35, 0.8);
+  /* Added a proper dark background matching your theme */
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
 }
+
+/* Added a subtle gradient overlay for depth */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stat-card > * {
+  position: relative;
+  z-index: 2;
+}
+
 .stat-card:hover {
-  background: rgba(139, 92, 246, 0.1);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+  background: rgba(139, 92, 246, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+  flex-shrink: 0;
+}
+
+.stat-info {
+  flex: 1;
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 900;
   font-family: 'Orbitron', monospace;
-  color: #06B6D4;
-  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #06B6D4, #8B5CF6, #EC4899);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s ease-in-out infinite;
+  margin-bottom: 0.25rem;
+  line-height: 1;
+  text-shadow: none; /* Removed conflicting text-shadow */
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color:transparent;
+  color: #CBD5E1; /* FIXED: Changed from transparent to proper color */
   font-weight: 600;
   font-family: 'Rajdhani', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  opacity: 0.9;
 }
 
 /* Enhanced Bottom Section */
@@ -312,54 +350,75 @@
 
 /* Gaming Newsletter Section */
 .newsletter-section {
-  background: rgba(139, 92, 246, 0.1);
-  padding: 2rem;
-  border-radius: 16px;
+  background: rgba(15, 15, 35, 0.6);
   border: 1px solid rgba(139, 92, 246, 0.2);
-  margin-bottom: 2rem;
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
   text-align: center;
-  animation: slideInUp 0.8s ease-out 0.6s both;
+  animation: slideInUp 0.8s ease-out 0.1s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+  pointer-events: none;
+}
+
+.newsletter-section > * {
+  position: relative;
+  z-index: 2;
 }
 
 .newsletter-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #F1F5F9;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   font-family: 'Rajdhani', sans-serif;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .newsletter-description {
   color: #CBD5E1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   font-weight: 500;
+  font-size: 1.1rem;
 }
 
 .newsletter-form {
   display: flex;
-  gap: 0.75rem;
-  max-width: 400px;
+  gap: 1rem;
+  max-width: 450px;
   margin: 0 auto;
 }
 
 .newsletter-input {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   border: 2px solid rgba(139, 92, 246, 0.3);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  background: rgba(15, 15, 35, 0.8);
   color: #F1F5F9;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 500;
+  font-size: 1rem;
   transition: all 0.3s ease;
 }
 
 .newsletter-input:focus {
   outline: none;
   border-color: #8B5CF6;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  background: rgba(15, 15, 35, 0.9);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
 .newsletter-input::placeholder {
@@ -367,35 +426,66 @@
 }
 
 .newsletter-button {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   background: linear-gradient(45deg, #8B5CF6, #06B6D4);
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   font-family: 'Rajdhani', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  font-size: 1rem;
 }
 
 .newsletter-button:hover {
   background: linear-gradient(45deg, #7C3AED, #0891B2);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+/* Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
+@media (max-width: 968px) {
+  .gaming-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-content {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
   
-  .footer-stats {
-    grid-template-columns: repeat(2, 1fr);
+  .gaming-stats {
+    grid-template-columns: 1fr;
   }
   
   .footer-bottom-content {
@@ -425,17 +515,27 @@
     font-size: 2rem;
   }
   
-  .footer-stats {
-    grid-template-columns: 1fr;
-    padding: 1.5rem;
+  .stat-card {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
   }
   
   .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .stat-icon {
+    font-size: 1.8rem;
   }
   
   .newsletter-section {
     padding: 1.5rem;
+  }
+  
+  .newsletter-title {
+    font-size: 1.5rem;
   }
 }
 
@@ -449,13 +549,20 @@
   .footer-logo,
   .social-link::before,
   .footer-link::before,
-  .footer-section {
+  .footer-section,
+  .gaming-stats,
+  .newsletter-section {
     animation: none !important;
   }
   
   .social-link:hover,
   .stat-card:hover,
-  .footer-link:hover {
+  .footer-link:hover,
+  .newsletter-button:hover {
     transform: none;
+  }
+  
+  .stat-number {
+    animation: none !important;
   }
 }
