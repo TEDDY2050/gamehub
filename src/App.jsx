@@ -15,7 +15,8 @@ import Game2048 from './games/Game2048';
 import PacManGame from './games/PacManGame';
 import PongGame from './games/PongGame';
 import TetrisGame from './games/TetrisGame';
-import BreakoutGame from './games/BreakoutGame'; 
+import BreakoutGame from './games/BreakoutGame';
+import ChessGame from './games/Chess'; 
 
 // Protected Route Component for Admin
 function ProtectedAdminRoute({ children }) {
@@ -64,8 +65,8 @@ function App() {
         <Route path="/game/pong" element={<PongGame />} />
         <Route path="/game/tetris" element={<TetrisGame />} />
         <Route path='/game/breakout' element={<BreakoutGame />} />
+        <Route path='/game/chess' element={<ChessGame />} />
 
-        
         {/* Admin Route */}
         <Route
           path="/admin" 

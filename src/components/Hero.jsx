@@ -144,7 +144,7 @@ function Hero({ onExploreClick }) {
         {/* Gaming Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {[
-            { number: '1000+', label: 'Free Games' },
+            { number: '10+', label: 'Free Games' },
             { number: '50K+', label: 'Players' },
             { number: '0', label: 'Downloads' },
             { number: '4.8★', label: 'Rating' }

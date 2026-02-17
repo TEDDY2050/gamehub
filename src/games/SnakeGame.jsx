@@ -1,567 +1,507 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-const BOARD_SIZE = 20;
-const CELL_SIZE = 25;
+const GRID_SIZE = 20;
+const CELL_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
-const INITIAL_DIRECTION = { x: 0, y: -1 };
 const GAME_SPEED = 150;
 
-const ModernSnakeGame = () => {
+const SnakeGame = () => {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [food, setFood] = useState({ x: 15, y: 15 });
-  const [direction, setDirection] = useState(INITIAL_DIRECTION);
-  const [gameRunning, setGameRunning] = useState(false);
+  const [direction, setDirection] = useState({ x: 1, y: 0 });
+  const [nextDirection, setNextDirection] = useState({ x: 1, y: 0 });
+  const [isPlaying, setIsPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
-  const [particles, setParticles] = useState([]);
+  const [bestScore, setBestScore] = useState(0);
   
   const gameLoopRef = useRef();
-  const canvasRef = useRef();
-  const lastDirectionRef = useRef(INITIAL_DIRECTION);
 
-  // Generate random food position
-  const generateFood = useCallback(() => {
+  const generateFood = useCallback((snakeBody) => {
     let newFood;
     do {
       newFood = {
-        x: Math.floor(Math.random() * BOARD_SIZE),
-        y: Math.floor(Math.random() * BOARD_SIZE)
+        x: Math.floor(Math.random() * GRID_SIZE),
+        y: Math.floor(Math.random() * GRID_SIZE)
       };
-    } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+    } while (snakeBody.some(segment => segment.x === newFood.x && segment.y === newFood.y));
     return newFood;
-  }, [snake]);
-
-  // Create particle effects
-  const createParticles = useCallback((x, y, color, count = 6) => {
-    const newParticles = [];
-    for (let i = 0; i < count; i++) {
-      newParticles.push({
-        id: Math.random(),
-        x: x * CELL_SIZE + CELL_SIZE / 2,
-        y: y * CELL_SIZE + CELL_SIZE / 2,
-        vx: (Math.random() - 0.5) * 8,
-        vy: (Math.random() - 0.5) * 8,
-        color,
-        life: 1,
-        decay: 0.02 + Math.random() * 0.02
-      });
-    }
-    setParticles(prev => [...prev, ...newParticles]);
   }, []);
 
-  // Reset game state
   const resetGame = () => {
-    setSnake(INITIAL_SNAKE);
-    setFood({ x: 15, y: 15 });
-    setDirection(INITIAL_DIRECTION);
-    setGameRunning(false);
-    setGameOver(false);
+    const newSnake = INITIAL_SNAKE;
+    setSnake(newSnake);
+    setFood(generateFood(newSnake));
+    setDirection({ x: 1, y: 0 });
+    setNextDirection({ x: 1, y: 0 });
     setScore(0);
-    setParticles([]);
-    lastDirectionRef.current = INITIAL_DIRECTION;
+    setGameOver(false);
+    setIsPlaying(true);
   };
 
-  // Start game
-  const startGame = () => {
-    if (!gameRunning && !gameOver) {
-      setGameRunning(true);
-    } else if (gameOver) {
-      resetGame();
-      setGameRunning(true);
-    }
-  };
-
-  // Main game loop
-  const moveSnake = useCallback(() => {
-    if (!gameRunning || gameOver) return;
-
-    setSnake(currentSnake => {
-      const newSnake = [...currentSnake];
-      const head = { ...newSnake[0] };
-      
-      // Move head
-      head.x += direction.x;
-      head.y += direction.y;
+  const gameLoop = useCallback(() => {
+    setSnake(prevSnake => {
+      const head = prevSnake[0];
+      const newHead = {
+        x: head.x + direction.x,
+        y: head.y + direction.y
+      };
 
       // Check wall collision
-      if (head.x < 0 || head.x >= BOARD_SIZE || head.y < 0 || head.y >= BOARD_SIZE) {
+      if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
         setGameOver(true);
-        setGameRunning(false);
-        createParticles(head.x, head.y, '#ef4444', 12);
-        if (score > highScore) {
-          setHighScore(score);
+        setIsPlaying(false);
+        if (score > bestScore) {
+          setBestScore(score);
         }
-        return currentSnake;
+        return prevSnake;
       }
 
       // Check self collision
-      if (newSnake.some(segment => segment.x === head.x && segment.y === head.y)) {
+      if (prevSnake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
         setGameOver(true);
-        setGameRunning(false);
-        createParticles(head.x, head.y, '#ef4444', 12);
-        if (score > highScore) {
-          setHighScore(score);
+        setIsPlaying(false);
+        if (score > bestScore) {
+          setBestScore(score);
         }
-        return currentSnake;
+        return prevSnake;
       }
 
-      newSnake.unshift(head);
+      const newSnake = [newHead, ...prevSnake];
 
       // Check food collision
-      if (head.x === food.x && head.y === food.y) {
+      if (newHead.x === food.x && newHead.y === food.y) {
         setScore(prev => prev + 10);
-        createParticles(food.x, food.y, '#10b981', 8);
-        setFood(generateFood());
+        setFood(generateFood(newSnake));
+        return newSnake;
       } else {
         newSnake.pop();
+        return newSnake;
       }
-
-      return newSnake;
     });
-  }, [direction, gameRunning, gameOver, food, score, highScore, createParticles, generateFood]);
+  }, [direction, food, score, bestScore, generateFood]);
 
-  // Handle keyboard input
   const handleKeyPress = useCallback((e) => {
-    if (!gameRunning && e.key !== ' ') return;
+    if (gameOver && e.key !== ' ') return;
 
-    const newDirection = { ...lastDirectionRef.current };
-    let validMove = false;
-
-    switch (e.key) {
-      case 'ArrowUp':
-      case 'w':
-      case 'W':
-        if (lastDirectionRef.current.y === 0) {
-          newDirection.x = 0;
-          newDirection.y = -1;
-          validMove = true;
-        }
-        break;
-      case 'ArrowDown':
-      case 's':
-      case 'S':
-        if (lastDirectionRef.current.y === 0) {
-          newDirection.x = 0;
-          newDirection.y = 1;
-          validMove = true;
-        }
-        break;
-      case 'ArrowLeft':
-      case 'a':
-      case 'A':
-        if (lastDirectionRef.current.x === 0) {
-          newDirection.x = -1;
-          newDirection.y = 0;
-          validMove = true;
-        }
-        break;
-      case 'ArrowRight':
-      case 'd':
-      case 'D':
-        if (lastDirectionRef.current.x === 0) {
-          newDirection.x = 1;
-          newDirection.y = 0;
-          validMove = true;
-        }
-        break;
-      case ' ':
-        e.preventDefault();
-        gameRunning ? setGameRunning(false) : startGame();
-        break;
-    }
-
-    if (validMove) {
-      setDirection(newDirection);
-      lastDirectionRef.current = newDirection;
-    }
-  }, [gameRunning, startGame]);
-
-  // Draw game on canvas
-  const drawGame = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const key = e.key;
     
-    const ctx = canvas.getContext('2d');
-    const time = Date.now() * 0.003;
-    
-    // Clear canvas with animated gradient
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, `hsl(${220 + Math.sin(time) * 20}, 70%, ${10 + Math.sin(time * 0.5) * 5}%)`);
-    gradient.addColorStop(1, `hsl(${280 + Math.cos(time) * 20}, 60%, ${15 + Math.cos(time * 0.7) * 5}%)`);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw subtle grid
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= BOARD_SIZE; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * CELL_SIZE, 0);
-      ctx.lineTo(i * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-      ctx.stroke();
-      
-      ctx.beginPath();
-      ctx.moveTo(0, i * CELL_SIZE);
-      ctx.lineTo(BOARD_SIZE * CELL_SIZE, i * CELL_SIZE);
-      ctx.stroke();
-    }
-
-    // Draw snake with gradient and glow
-    snake.forEach((segment, index) => {
-      const isHead = index === 0;
-      
-      ctx.save();
-      
-      if (isHead) {
-        // Head with glow effect
-        const headGradient = ctx.createRadialGradient(
-          segment.x * CELL_SIZE + CELL_SIZE/2, segment.y * CELL_SIZE + CELL_SIZE/2, 0,
-          segment.x * CELL_SIZE + CELL_SIZE/2, segment.y * CELL_SIZE + CELL_SIZE/2, CELL_SIZE
-        );
-        headGradient.addColorStop(0, '#00f5ff');
-        headGradient.addColorStop(1, '#0099cc');
-        ctx.fillStyle = headGradient;
-        ctx.shadowColor = '#00f5ff';
-        ctx.shadowBlur = 20;
+    if (key === ' ') {
+      e.preventDefault();
+      if (gameOver) {
+        resetGame();
       } else {
-        // Body segments with fading effect
-        const intensity = 1 - (index / snake.length) * 0.6;
-        const bodyGradient = ctx.createLinearGradient(
-          segment.x * CELL_SIZE, segment.y * CELL_SIZE,
-          segment.x * CELL_SIZE + CELL_SIZE, segment.y * CELL_SIZE + CELL_SIZE
-        );
-        bodyGradient.addColorStop(0, `rgba(0, 200, 255, ${intensity})`);
-        bodyGradient.addColorStop(1, `rgba(0, 150, 200, ${intensity * 0.8})`);
-        ctx.fillStyle = bodyGradient;
-        ctx.shadowColor = `rgba(0, 200, 255, ${intensity * 0.5})`;
-        ctx.shadowBlur = 10;
+        setIsPlaying(prev => !prev);
       }
-      
-      // Draw rounded rectangle for snake segments
-      const x = segment.x * CELL_SIZE + 2;
-      const y = segment.y * CELL_SIZE + 2;
-      const width = CELL_SIZE - 4;
-      const height = CELL_SIZE - 4;
-      const radius = 8;
-      
-      ctx.beginPath();
-      ctx.roundRect(x, y, width, height, radius);
-      ctx.fill();
-      
-      ctx.restore();
-    });
-
-    // Draw food with pulsing animation
-    const foodPulse = Math.sin(Date.now() * 0.008) * 0.3 + 0.8;
-    const foodGradient = ctx.createRadialGradient(
-      food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, 0,
-      food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, CELL_SIZE * foodPulse
-    );
-    foodGradient.addColorStop(0, '#ff6b6b');
-    foodGradient.addColorStop(0.7, '#ff4757');
-    foodGradient.addColorStop(1, '#c44569');
-    
-    ctx.fillStyle = foodGradient;
-    ctx.shadowColor = '#ff6b6b';
-    ctx.shadowBlur = 25;
-    
-    const foodSize = (CELL_SIZE - 6) * foodPulse;
-    const foodOffset = (CELL_SIZE - foodSize) / 2;
-    ctx.beginPath();
-    ctx.roundRect(
-      food.x * CELL_SIZE + foodOffset,
-      food.y * CELL_SIZE + foodOffset,
-      foodSize,
-      foodSize,
-      foodSize / 4
-    );
-    ctx.fill();
-
-    // Draw particles
-    particles.forEach(particle => {
-      ctx.fillStyle = `${particle.color}${Math.floor(particle.life * 255).toString(16).padStart(2, '0')}`;
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, 3 * particle.life, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    ctx.shadowBlur = 0;
-  }, [snake, food, particles]);
-
-  // Update particles
-  useEffect(() => {
-    const updateParticles = () => {
-      setParticles(prev => prev.map(particle => ({
-        ...particle,
-        x: particle.x + particle.vx,
-        y: particle.y + particle.vy,
-        life: Math.max(0, particle.life - particle.decay),
-        vx: particle.vx * 0.95,
-        vy: particle.vy * 0.95 + 0.1 // gravity
-      })).filter(particle => particle.life > 0));
-    };
-
-    const interval = setInterval(updateParticles, 16);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Game loop
-  useEffect(() => {
-    if (gameRunning) {
-      gameLoopRef.current = setInterval(moveSnake, GAME_SPEED);
-    } else {
-      clearInterval(gameLoopRef.current);
+      return;
     }
-    return () => clearInterval(gameLoopRef.current);
-  }, [moveSnake, gameRunning]);
 
-  // Draw game
+    if (!isPlaying) return;
+
+    let newDirection = { ...nextDirection };
+
+    if ((key === 'ArrowUp' || key === 'w' || key === 'W') && direction.y === 0) {
+      newDirection = { x: 0, y: -1 };
+    } else if ((key === 'ArrowDown' || key === 's' || key === 'S') && direction.y === 0) {
+      newDirection = { x: 0, y: 1 };
+    } else if ((key === 'ArrowLeft' || key === 'a' || key === 'A') && direction.x === 0) {
+      newDirection = { x: -1, y: 0 };
+    } else if ((key === 'ArrowRight' || key === 'd' || key === 'D') && direction.x === 0) {
+      newDirection = { x: 1, y: 0 };
+    }
+
+    if (newDirection.x !== nextDirection.x || newDirection.y !== nextDirection.y) {
+      setNextDirection(newDirection);
+      e.preventDefault();
+    }
+  }, [direction, nextDirection, isPlaying, gameOver]);
+
+  const renderGrid = () => {
+    const cells = [];
+    for (let y = 0; y < GRID_SIZE; y++) {
+      for (let x = 0; x < GRID_SIZE; x++) {
+        const isSnake = snake.some(segment => segment.x === x && segment.y === y);
+        const isHead = snake[0].x === x && snake[0].y === y;
+        const isFood = food.x === x && food.y === y;
+        
+        cells.push(
+          <div
+            key={`${x}-${y}`}
+            style={{
+              width: CELL_SIZE,
+              height: CELL_SIZE,
+              backgroundColor: isFood ? '#edc22e' : isSnake ? (isHead ? '#776e65' : '#8f7a66') : '#cdc1b4',
+              borderRadius: (isSnake || isFood) ? '3px' : '0',
+              border: (isSnake || isFood) ? 'none' : '1px solid #bbada0',
+              margin: (isSnake || isFood) ? '1px' : '0',
+              boxShadow: (isSnake || isFood) ? '0 2px 4px rgba(0, 0, 0, 0.2)' : 'none'
+            }}
+          />
+        );
+      }
+    }
+    return cells;
+  };
+
   useEffect(() => {
-    const draw = () => {
-      drawGame();
-      requestAnimationFrame(draw);
+    if (isPlaying && !gameOver) {
+      gameLoopRef.current = setInterval(gameLoop, GAME_SPEED);
+    }
+    
+    return () => {
+      if (gameLoopRef.current) {
+        clearInterval(gameLoopRef.current);
+      }
     };
-    draw();
-  }, [drawGame]);
+  }, [isPlaying, gameOver, gameLoop]);
 
-  // Keyboard events
+  useEffect(() => {
+    if (isPlaying) {
+      setDirection(nextDirection);
+    }
+  }, [nextDirection, isPlaying]);
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 
+  useEffect(() => {
+    const saved = localStorage.getItem('snake-best-score');
+    if (saved) {
+      setBestScore(parseInt(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (bestScore > 0) {
+      localStorage.setItem('snake-best-score', bestScore.toString());
+    }
+  }, [bestScore]);
+
   return (
-    <div style={styles.container}>
-      <div style={styles.gameWrapper}>
-        {/* Header */}
-        <div style={styles.header}>
-          <h1 style={styles.title}>🐍 SNAKE GAME</h1>
-          <div style={styles.scores}>
-            <div style={styles.scoreBox}>
-              <span style={styles.scoreLabel}>Score</span>
-              <span style={styles.scoreValue}>{score}</span>
+    <>
+      <style>{`
+        * {
+          box-sizing: border-box;
+        }
+        
+        body {
+          margin: 0;
+          overflow-x: hidden;
+        }
+
+        .snake-game {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .game-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          max-width: 600px;
+          margin-bottom: 1.5rem;
+          gap: 1rem;
+        }
+
+        .home-btn, .control-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          text-decoration: none;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          font-weight: 600;
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .home-btn:hover, .control-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+
+        .game-title {
+          font-size: 2rem;
+          font-weight: 900;
+          text-align: center;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+          margin: 0;
+          color: #10b981;
+        }
+
+        .game-content {
+          display: flex;
+          gap: 1.5rem;
+          max-width: 650px;
+          width: 100%;
+          align-items: flex-start;
+        }
+        
+        .left-section {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .game-board {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 10px;
+          border-radius: 10px;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(15px);
+        }
+
+        .grid-container {
+          background: #bbada0;
+          padding: 3px;
+          border-radius: 6px;
+          display: grid;
+          grid-template-columns: repeat(20, ${CELL_SIZE}px);
+          gap: 0;
+        }
+
+        .game-sidebar {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          flex: 1;
+        }
+
+        .info-panel {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 1rem;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+        }
+
+        .panel-title {
+          margin: 0 0 0.75rem 0;
+          font-size: 0.85rem;
+          text-align: center;
+          color: #10b981;
+          text-transform: uppercase;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+
+        .score-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+        }
+
+        .score-item {
+          text-align: center;
+        }
+
+        .score-label {
+          font-size: 0.75rem;
+          opacity: 0.8;
+          margin-bottom: 0.25rem;
+        }
+
+        .score-value {
+          font-size: 1.25rem;
+          font-weight: bold;
+          color: #10b981;
+        }
+
+        .controls-text {
+          font-size: 0.8rem;
+          line-height: 1.6;
+          opacity: 0.9;
+          margin: 0;
+        }
+
+        .game-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.85);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          backdrop-filter: blur(5px);
+          z-index: 1000;
+        }
+
+        .overlay-content {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 2rem;
+          border-radius: 20px;
+          text-align: center;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(20px);
+          max-width: 350px;
+        }
+
+        .overlay-title {
+          font-size: 2.5rem;
+          margin: 0 0 1rem 0;
+        }
+
+        .overlay-title.game-over {
+          color: #ef4444;
+        }
+
+        .overlay-title.start {
+          color: #10b981;
+        }
+
+        .overlay-message {
+          font-size: 1rem;
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+        }
+
+        .overlay-btn {
+          background: linear-gradient(135deg, #10b981, #059669);
+          border: none;
+          color: white;
+          padding: 0.75rem 2rem;
+          font-size: 1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+          transition: all 0.3s ease;
+        }
+
+        .overlay-btn:hover {
+          transform: scale(1.05);
+          box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        @media (max-width: 640px) {
+          .snake-game {
+            padding: 1rem;
+          }
+
+          .game-header {
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .game-title {
+            font-size: 1.5rem;
+            width: 100%;
+            order: -1;
+            margin-bottom: 0.5rem;
+          }
+
+          .game-content {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .game-sidebar {
+            width: 100%;
+            max-width: 430px;
+          }
+        }
+      `}</style>
+
+      <div className="snake-game">
+        <div className="game-header">
+          <Link to="/" className="home-btn">🏠 Back</Link>
+          <h1 className="game-title">🐍 Snake</h1>
+          <button onClick={resetGame} className="control-btn">🔄 New Game</button>
+        </div>
+
+        <div className="game-content">
+          <div className="left-section">
+            <div className="game-board">
+              <div className="grid-container">
+                {renderGrid()}
+              </div>
             </div>
-            <div style={styles.scoreBox}>
-              <span style={styles.scoreLabel}>Best</span>
-              <span style={styles.scoreValue}>{highScore}</span>
+            
+            <div className="info-panel">
+              <h3 className="panel-title">Score</h3>
+              <div className="score-grid">
+                <div className="score-item">
+                  <div className="score-label">Current</div>
+                  <div className="score-value">{score}</div>
+                </div>
+                <div className="score-item">
+                  <div className="score-label">Best</div>
+                  <div className="score-value">{bestScore}</div>
+                </div>
+                <div className="score-item" style={{ gridColumn: 'span 2' }}>
+                  <div className="score-label">Length</div>
+                  <div className="score-value">{snake.length}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="game-sidebar">
+
+            <div className="info-panel">
+              <h3 className="panel-title">Controls</h3>
+              <p className="controls-text">
+                ← → ↑ ↓ or WASD<br/>
+                to move the snake<br/>
+                <br/>
+                SPACE to pause/resume<br/>
+                <br/>
+                Eat food to grow!<br/>
+                Don't hit walls or yourself!
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Game Board */}
-        <div style={styles.gameBoard}>
-          <canvas
-            ref={canvasRef}
-            width={BOARD_SIZE * CELL_SIZE}
-            height={BOARD_SIZE * CELL_SIZE}
-            style={styles.canvas}
-          />
-          
-          {/* Game Over Overlay */}
-          {gameOver && (
-            <div style={styles.overlay}>
-              <div style={styles.overlayContent}>
-                <h2 style={styles.gameOverTitle}>Game Over!</h2>
-                <p style={styles.finalScore}>Final Score: {score}</p>
-                <button style={styles.playButton} onClick={startGame}>
-                  🔄 Play Again
-                </button>
+        {gameOver && (
+          <div className="game-overlay">
+            <div className="overlay-content">
+              <h2 className="overlay-title game-over">Game Over!</h2>
+              <div className="overlay-message">
+                <p><strong>Score:</strong> {score}</p>
+                <p><strong>Length:</strong> {snake.length}</p>
+                {score === bestScore && score > 0 && <p>🎉 New Best!</p>}
               </div>
+              <button onClick={resetGame} className="overlay-btn">
+                Play Again (SPACE)
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Start Overlay */}
-          {!gameRunning && !gameOver && (
-            <div style={styles.overlay}>
-              <div style={styles.overlayContent}>
-                <h2 style={styles.startTitle}>Ready to Play?</h2>
-                <p style={styles.instructions}>
-                  Use arrow keys or WASD to move<br/>
-                  Press SPACE to pause
-                </p>
-                <button style={styles.playButton} onClick={startGame}>
-                  ▶️ Start Game
-                </button>
+        {!isPlaying && !gameOver && (
+          <div className="game-overlay">
+            <div className="overlay-content">
+              <h2 className="overlay-title start">Ready?</h2>
+              <div className="overlay-message">
+                Use arrow keys or WASD<br/>
+                Eat food to grow longer!<br/>
+                Avoid walls and yourself
               </div>
+              <button onClick={() => setIsPlaying(true)} className="overlay-btn">
+                Start Game (SPACE)
+              </button>
             </div>
-          )}
-        </div>
-
-        {/* Controls */}
-        <div style={styles.controls}>
-          <button 
-            style={{...styles.controlButton, opacity: gameRunning ? 1 : 0.5}} 
-            onClick={() => setGameRunning(!gameRunning)}
-            disabled={gameOver}
-          >
-            {gameRunning ? '⏸️ Pause' : '▶️ Resume'}
-          </button>
-          <button style={styles.controlButton} onClick={resetGame}>
-            🔄 Reset
-          </button>
-        </div>
-
-        {/* Footer */}
-        <div style={styles.footer}>
-          <p style={styles.hint}>
-            🎮 Arrow Keys / WASD to move • SPACE to pause • Length: {snake.length}
-          </p>
-        </div>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
-const styles = {
-  container: {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    padding: '20px'
-  },
-  gameWrapper: {
-    background: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(20px)',
-    borderRadius: '20px',
-    padding: '30px',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    maxWidth: '600px',
-    width: '100%'
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-    flexWrap: 'wrap',
-    gap: '15px'
-  },
-  title: {
-    color: 'white',
-    fontSize: '32px',
-    fontWeight: 'bold',
-    margin: 0,
-    textShadow: '0 0 20px rgba(255, 255, 255, 0.5)'
-  },
-  scores: {
-    display: 'flex',
-    gap: '15px'
-  },
-  scoreBox: {
-    background: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: '12px',
-    padding: '10px 15px',
-    textAlign: 'center',
-    minWidth: '70px'
-  },
-  scoreLabel: {
-    display: 'block',
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: '12px',
-    fontWeight: '500',
-    marginBottom: '2px'
-  },
-  scoreValue: {
-    display: 'block',
-    color: 'white',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-  },
-  gameBoard: {
-    position: 'relative',
-    margin: '0 auto',
-    borderRadius: '15px',
-    overflow: 'hidden',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-    border: '2px solid rgba(255, 255, 255, 0.2)'
-  },
-  canvas: {
-    display: 'block',
-    background: 'transparent'
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'rgba(0, 0, 0, 0.8)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backdropFilter: 'blur(5px)'
-  },
-  overlayContent: {
-    textAlign: 'center',
-    color: 'white'
-  },
-  gameOverTitle: {
-    fontSize: '36px',
-    color: '#ff6b6b',
-    marginBottom: '10px',
-    textShadow: '0 0 20px rgba(255, 107, 107, 0.8)'
-  },
-  startTitle: {
-    fontSize: '36px',
-    color: '#00f5ff',
-    marginBottom: '15px',
-    textShadow: '0 0 20px rgba(0, 245, 255, 0.8)'
-  },
-  finalScore: {
-    fontSize: '20px',
-    marginBottom: '20px',
-    color: '#ffd700'
-  },
-  instructions: {
-    fontSize: '16px',
-    marginBottom: '25px',
-    color: 'rgba(255, 255, 255, 0.9)',
-    lineHeight: '1.5'
-  },
-  playButton: {
-    background: 'linear-gradient(135deg, #00f5ff, #0099cc)',
-    border: 'none',
-    borderRadius: '25px',
-    color: 'white',
-    padding: '15px 30px',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 5px 15px rgba(0, 245, 255, 0.4)'
-  },
-  controls: {
-    display: 'flex',
-    gap: '15px',
-    justifyContent: 'center',
-    marginTop: '20px'
-  },
-  controlButton: {
-    background: 'rgba(255, 255, 255, 0.2)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
-    borderRadius: '12px',
-    color: 'white',
-    padding: '12px 20px',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease'
-  },
-  footer: {
-    marginTop: '20px',
-    textAlign: 'center'
-  },
-  hint: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: '14px',
-    margin: 0
-  }
-};
-
-export default ModernSnakeGame;
+export default SnakeGame;

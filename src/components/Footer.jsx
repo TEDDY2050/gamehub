@@ -38,7 +38,7 @@ function Footer() {
     <footer className="enhanced-footer">
       <div className="footer-container">
         {/* Gaming Stats Section */}
-        <div className="gaming-stats">
+        {/* <div className="gaming-stats">
           <div className="stat-card">
             <div className="stat-icon">🎮</div>
             <div className="stat-info">
@@ -67,7 +67,7 @@ function Footer() {
               <div className="stat-label">User Rating</div>
             </div>
           </div>
-        </div>
+        </div> */}
         <br />
 
         {/* Newsletter Section */}

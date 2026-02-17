@@ -12,6 +12,8 @@ import breakoutImg from '../assets/breakout.png';
 import sudokuImg from '../assets/sudoku.png';
 import checkersImg from '../assets/checkers.png';
 import rpsImg from '../assets/rps.png';
+import memoryImg from '../assets/memory.png';
+import pongImg from '../assets/pong.png';
 
 function GameGrid({ selectedCategory = 'all' }) {
   const navigate = useNavigate();
@@ -160,21 +162,21 @@ function GameGrid({ selectedCategory = 'all' }) {
       release_date: '2024',
       badges: ['Intellectual', 'Timeless']
     },
-    // {
-    //   id: 'pong',
-    //   title: 'Pong',
-    //   image: pongImg,
-    //   category: 'arcade',
-    //   rating: '4.3',
-    //   plays: '67K',
-    //   link: '/game/pong',
-    //   type: 'built-in',
-    //   description: 'Retro table tennis game - the classic that started it all',
-    //   genre: 'Arcade',
-    //   developer: 'Built-in',
-    //   release_date: '2024',
-    //   badges: ['Retro', 'Original']
-    // },
+    {
+      id: 'pong',
+      title: 'Pong',
+      image: pongImg,
+      category: 'arcade',
+      rating: '4.3',
+      plays: '67K',
+      link: '/game/pong',
+      type: 'built-in',
+      description: 'Retro table tennis game - the classic that started it all',
+      genre: 'Arcade',
+      developer: 'Built-in',
+      release_date: '2024',
+      badges: ['Retro', 'Original']
+    },
     {
       id: 'breakout',
       title: 'Breakout',
@@ -220,21 +222,21 @@ function GameGrid({ selectedCategory = 'all' }) {
       release_date: '2024',
       badges: ['Classic', 'Strategy']
     },
-    // {
-    //   id: 'memory',
-    //   title: 'Memory Game',
-    //   image: memoryImg,
-    //   category: 'puzzle',
-    //   rating: '4.4',
-    //   plays: '76K',
-    //   link: '/game/memory',
-    //   type: 'built-in',
-    //   description: 'Test your memory by matching pairs of cards',
-    //   genre: 'Puzzle',
-    //   developer: 'Built-in',
-    //   release_date: '2024',
-    //   badges: ['Memory', 'Family']
-    // },
+    {
+      id: 'memory',
+      title: 'Memory Game',
+      image: memoryImg,
+      category: 'puzzle',
+      rating: '4.4',
+      plays: '76K',
+      link: '/game/memory',
+      type: 'built-in',
+      description: 'Test your memory by matching pairs of cards',
+      genre: 'Puzzle',
+      developer: 'Built-in',
+      release_date: '2024',
+      badges: ['Memory', 'Family']
+    },
     {
       id: 'rps',
       title: 'Rock Paper Scissors',
